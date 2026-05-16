@@ -510,7 +510,9 @@ button {
   background: rgba(251, 255, 255, 0.9);
   padding: 12px;
   display: grid;
+  position: relative;
   place-items: center;
+  gap: 8px;
 }
 
 .day-card.blank {
@@ -540,9 +542,36 @@ button {
   place-items: center;
 }
 
+.day-source-hint {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 0.72rem;
+  line-height: 1;
+  color: var(--muted);
+}
+
 .day-number {
   font-size: 2.5rem;
   font-family: var(--font-display);
+  line-height: 1;
+}
+
+.day-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.day-toggle input[type="checkbox"] {
+  accent-color: var(--accent);
+  inline-size: 16px;
+  block-size: 16px;
+}
+
+.day-toggle-label {
   line-height: 1;
 }
 

@@ -7,8 +7,10 @@ export type CalendarDay = {
   day: number;
   isPast: boolean;
   weekday: WeekdayKey;
+  weeklyCheckin: boolean;
   effectiveCheckin: boolean;
   source: "weekly_rule" | "daily_override";
+  sourceHint: "周" | "日";
   overrideAction: DailyOverrideRecord["action"] | null;
 };
 
@@ -27,18 +29,21 @@ export function buildCalendarDays(input: {
     }
 
     const weekday = getShanghaiWeekday(new Date(`${cell.date}T12:00:00+08:00`));
+    const weeklyCheckin = input.weeklyRule[weekday];
     const overrideAction = overrideMap.get(cell.date) ?? null;
     const source = overrideAction ? "daily_override" : "weekly_rule";
     const effectiveCheckin =
-      overrideAction === "FORCE_ON" ? true : overrideAction === "FORCE_OFF" ? false : input.weeklyRule[weekday];
+      overrideAction === "FORCE_ON" ? true : overrideAction === "FORCE_OFF" ? false : weeklyCheckin;
 
     return {
       date: cell.date,
       day: cell.day,
       isPast: compareDateStrings(cell.date, today) < 0,
       weekday,
+      weeklyCheckin,
       effectiveCheckin,
       source,
+      sourceHint: source === "daily_override" ? "日" : "周",
       overrideAction,
     };
   });

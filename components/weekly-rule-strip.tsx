@@ -35,7 +35,7 @@ export function WeeklyRuleStrip(props: {
           throw new Error("Failed to update weekly rule");
         }
 
-        showToast(`${WEEKDAY_LABELS[day]}已${checked ? "设置为默认打卡" : "取消默认打卡"}`);
+        showToast(`每${WEEKDAY_LABELS[day]}已${checked ? "设置为默认打卡" : "取消默认打卡"}`);
         router.refresh();
       } catch {
         setRule(rule);

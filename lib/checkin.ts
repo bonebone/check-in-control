@@ -1,22 +1,6 @@
-import { type DailyOverrideAction, type WeeklyRule, type WeekdayKey } from "@/lib/constants";
 import { getDailyOverride, getWeeklyRule } from "@/lib/db";
+import { resolveCheckinDecision } from "@/lib/checkin-logic";
 import { getShanghaiDateString, getShanghaiWeekday } from "@/lib/time";
-
-export function resolveCheckinDecision(input: {
-  weeklyRule: WeeklyRule;
-  weekday: WeekdayKey;
-  dailyOverrideAction?: DailyOverrideAction | null;
-}) {
-  if (input.dailyOverrideAction === "FORCE_ON") {
-    return true;
-  }
-
-  if (input.dailyOverrideAction === "FORCE_OFF") {
-    return false;
-  }
-
-  return input.weeklyRule[input.weekday];
-}
 
 export async function getTodayCheckinDecision(now: Date = new Date()) {
   const date = getShanghaiDateString(now);

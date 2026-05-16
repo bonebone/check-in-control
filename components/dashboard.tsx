@@ -1,14 +1,10 @@
 import { AccountMenu } from "@/components/account-menu";
 import { ApiEndpointCard } from "@/components/api-endpoint-card";
 import { CalendarHeader } from "@/components/calendar-header";
+import { CalendarDayCell } from "@/components/calendar-day-cell";
 import { WeeklyRuleStrip } from "@/components/weekly-rule-strip";
 import { type WeeklyRule } from "@/lib/constants";
 import type { CalendarDay } from "@/lib/calendar";
-
-function dayCardClass(day: CalendarDay) {
-  const statusClass = day.effectiveCheckin ? "status-on" : "status-off";
-  return `day-card ${statusClass}${day.isPast ? " disabled" : ""}`;
-}
 
 export function Dashboard(props: {
   monthCursor: string;
@@ -51,11 +47,7 @@ export function Dashboard(props: {
 
               {props.calendarDays.map((day, index) =>
                 day ? (
-                  <article key={day.date} className={dayCardClass(day)}>
-                    <div className="day-header">
-                      <div className="day-number">{day.day}</div>
-                    </div>
-                  </article>
+                  <CalendarDayCell key={day.date} day={day} />
                 ) : (
                   <div key={`blank-${index}`} className="day-card blank" />
                 ),
