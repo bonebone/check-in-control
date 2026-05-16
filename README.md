@@ -58,10 +58,10 @@ npm run dev
 ## 快捷指令接口
 
 - 接口地址：`GET /api/checkin/today?key=<api_key>`
-- 成功返回：
+- 成功返回纯文本：
 
-```json
-{ "checkin": true }
+```txt
+true
 ```
 
 - 鉴权失败返回：

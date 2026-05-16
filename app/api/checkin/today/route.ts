@@ -12,5 +12,10 @@ export async function GET(request: Request) {
   }
 
   const decision = await getTodayCheckinDecision();
-  return NextResponse.json({ checkin: decision.checkin });
+  return new NextResponse(decision.checkin ? "true" : "false", {
+    status: 200,
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+    },
+  });
 }
