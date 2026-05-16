@@ -15,7 +15,9 @@ export function CalendarHeader(props: {
 }) {
   const router = useRouter();
   const rootRef = useRef<HTMLDivElement>(null);
-  const [isPickerOpen, setIsPickerOpen] = useState(false);
+  const yearSelectRef = useRef<HTMLSelectElement>(null);
+  const monthSelectRef = useRef<HTMLSelectElement>(null);
+  const [activePicker, setActivePicker] = useState<"year" | "month" | null>(null);
   const { year, month } = parseCursor(props.monthCursor);
   const currentYear = new Date().getFullYear();
   const startYear = Math.min(year, currentYear) - 3;
@@ -29,13 +31,13 @@ export function CalendarHeader(props: {
   useEffect(() => {
     function handlePointerDown(event: MouseEvent) {
       if (!rootRef.current?.contains(event.target as Node)) {
-        setIsPickerOpen(false);
+        setActivePicker(null);
       }
     }
 
     function handleEscape(event: KeyboardEvent) {
       if (event.key === "Escape") {
-        setIsPickerOpen(false);
+        setActivePicker(null);
       }
     }
 
@@ -48,9 +50,19 @@ export function CalendarHeader(props: {
     };
   }, []);
 
+  useEffect(() => {
+    if (activePicker === "year") {
+      yearSelectRef.current?.focus();
+    }
+
+    if (activePicker === "month") {
+      monthSelectRef.current?.focus();
+    }
+  }, [activePicker]);
+
   function jumpTo(nextYear: number, nextMonth: number) {
     const nextCursor = `${nextYear}-${String(nextMonth).padStart(2, "0")}`;
-    setIsPickerOpen(false);
+    setActivePicker(null);
     router.push(`/?month=${nextCursor}`);
   }
 
@@ -58,42 +70,60 @@ export function CalendarHeader(props: {
     <div className="calendar-toolbar">
       <div className="eyebrow">Calendar</div>
       <div className="calendar-nav" ref={rootRef}>
-        <a className="ghost-button calendar-nav-button" href={`/?month=${props.prevMonth}`}>
-          上个月
+        <a className="ghost-button icon-button calendar-nav-button" href={`/?month=${props.prevMonth}`} aria-label="上个月">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M14.7 5.3a1 1 0 0 1 0 1.4L9.41 12l5.3 5.3a1 1 0 1 1-1.42 1.4l-6-6a1 1 0 0 1 0-1.4l6-6a1 1 0 0 1 1.42 0Z" />
+          </svg>
         </a>
 
-        <div className={`calendar-picker ${isPickerOpen ? "open" : ""}`}>
-          <button className="calendar-title-button" type="button" onClick={() => setIsPickerOpen((value) => !value)}>
-            <span className="section-title">{year} - {String(month).padStart(2, "0")}</span>
-          </button>
+        <div className="calendar-title-group">
+          {activePicker === "year" ? (
+            <select
+              ref={yearSelectRef}
+              className="calendar-inline-select"
+              value={String(year)}
+              onBlur={() => setActivePicker(null)}
+              onChange={(event) => jumpTo(Number(event.target.value), month)}
+            >
+              {yearOptions.map((optionYear) => (
+                <option key={optionYear} value={optionYear}>
+                  {optionYear}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <button className="calendar-title-button" type="button" onClick={() => setActivePicker("year")}>
+              <span className="section-title">{year}</span>
+            </button>
+          )}
 
-          <div className="calendar-picker-panel">
-            <label className="field">
-              <span className="label">年份</span>
-              <select className="select" value={String(year)} onChange={(event) => jumpTo(Number(event.target.value), month)}>
-                {yearOptions.map((optionYear) => (
-                  <option key={optionYear} value={optionYear}>
-                    {optionYear} 年
-                  </option>
-                ))}
-              </select>
-            </label>
+          <span className="calendar-separator">-</span>
 
-            <label className="field">
-              <span className="label">月份</span>
-              <select className="select" value={String(month)} onChange={(event) => jumpTo(year, Number(event.target.value))}>
-                {Array.from({ length: 12 }, (_, index) => index + 1).map((optionMonth) => (
-                  <option key={optionMonth} value={optionMonth}>
-                    {String(optionMonth).padStart(2, "0")} 月
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
+          {activePicker === "month" ? (
+            <select
+              ref={monthSelectRef}
+              className="calendar-inline-select month"
+              value={String(month)}
+              onBlur={() => setActivePicker(null)}
+              onChange={(event) => jumpTo(year, Number(event.target.value))}
+            >
+              {Array.from({ length: 12 }, (_, index) => index + 1).map((optionMonth) => (
+                <option key={optionMonth} value={optionMonth}>
+                  {String(optionMonth).padStart(2, "0")}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <button className="calendar-title-button" type="button" onClick={() => setActivePicker("month")}>
+              <span className="section-title">{String(month).padStart(2, "0")}</span>
+            </button>
+          )}
         </div>
 
-        <a className="ghost-button calendar-nav-button" href={`/?month=${props.nextMonth}`}>
-          下个月
+        <a className="ghost-button icon-button calendar-nav-button" href={`/?month=${props.nextMonth}`} aria-label="下个月">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M9.3 18.7a1 1 0 0 1 0-1.4L14.59 12l-5.3-5.3a1 1 0 0 1 1.42-1.4l6 6a1 1 0 0 1 0 1.4l-6 6a1 1 0 0 1-1.42 0Z" />
+          </svg>
         </a>
       </div>
     </div>
