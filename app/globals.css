@@ -543,6 +543,7 @@ button {
 }
 
 .day-source-hint {
+  display: none;
   position: absolute;
   top: 8px;
   right: 10px;

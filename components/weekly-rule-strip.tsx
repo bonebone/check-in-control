@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { WEEKDAY_KEYS, WEEKDAY_LABELS, type WeeklyRule, type WeekdayKey } from "@/lib/constants";
 import { useToast } from "@/components/toast-provider";
@@ -12,6 +12,10 @@ export function WeeklyRuleStrip(props: {
   const { showToast } = useToast();
   const [isPending, startTransition] = useTransition();
   const [rule, setRule] = useState<WeeklyRule>(props.weeklyRule);
+
+  useEffect(() => {
+    setRule(props.weeklyRule);
+  }, [props.weeklyRule]);
 
   function updateOneDay(day: WeekdayKey, checked: boolean) {
     const nextRule = {

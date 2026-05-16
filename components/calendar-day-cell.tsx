@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/toast-provider";
 import { resolveNextOverrideAction } from "@/lib/checkin-logic";
@@ -18,6 +18,10 @@ export function CalendarDayCell(props: {
   const { showToast } = useToast();
   const [isPending, startTransition] = useTransition();
   const [day, setDay] = useState(props.day);
+
+  useEffect(() => {
+    setDay(props.day);
+  }, [props.day]);
 
   function formatMonthDay(date: string) {
     const [, month, currentDay] = date.split("-");
