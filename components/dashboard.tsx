@@ -56,13 +56,9 @@ export function Dashboard(props: {
           <div>
             <div className="eyebrow">Check In Control</div>
             <h1>远程打卡规则台</h1>
-            <p>单用户、东八区固定、日指令覆盖周规则。</p>
+            <p>{props.today}</p>
           </div>
           <div className="topbar-actions">
-            <div className="today-chip">
-              <span className="eyebrow">Today</span>
-              <strong>{props.today}</strong>
-            </div>
             <AccountMenu />
           </div>
         </header>
@@ -73,8 +69,7 @@ export function Dashboard(props: {
 
             <article className="card stack">
               <div className="eyebrow">Policy</div>
-              <p className="meta">优先级：日指令 &gt; 周规则 &gt; 默认不打卡。</p>
-              <p className="meta">过去日期只读，今天与未来日期允许操作。</p>
+              <p className="meta">优先级：日指令 &gt; 周规则 &gt; 默认不打卡；过去日期只读，今天与未来日期允许操作。</p>
             </article>
           </section>
 
