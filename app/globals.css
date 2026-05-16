@@ -464,6 +464,33 @@ button {
   letter-spacing: 0.08em;
 }
 
+.weekday-control {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 10px 8px 14px;
+  border-radius: 16px;
+  border: 1px solid transparent;
+  background: rgba(248, 253, 253, 0.7);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.weekday-control.active {
+  border-color: rgba(77, 157, 150, 0.22);
+  box-shadow: inset 0 0 0 1px rgba(77, 157, 150, 0.14);
+}
+
+.weekday-label {
+  font-size: 0.92rem;
+}
+
+.weekday-control input[type="checkbox"] {
+  accent-color: var(--accent);
+  inline-size: 18px;
+  block-size: 18px;
+}
+
 .day-card {
   min-height: 168px;
   border-radius: 22px;
@@ -571,39 +598,6 @@ button {
   color: var(--danger);
 }
 
-.rule-grid {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.rule-tile {
-  padding: 16px;
-  border-radius: 16px;
-  border: 1px solid var(--line);
-  background: rgba(251, 255, 255, 0.78);
-  display: grid;
-  gap: 10px;
-}
-
-.rule-tile.active {
-  border-color: rgba(77, 157, 150, 0.28);
-  box-shadow: inset 0 0 0 1px rgba(77, 157, 150, 0.18);
-}
-
-.rule-tile label {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  align-items: center;
-}
-
-.rule-tile input[type="checkbox"] {
-  accent-color: var(--accent);
-  inline-size: 18px;
-  block-size: 18px;
-}
-
 .mono {
   font-family: "SFMono-Regular", "Consolas", monospace;
   font-size: 0.92rem;
@@ -628,8 +622,7 @@ button {
     grid-template-columns: 1fr;
   }
 
-  .overview,
-  .rule-grid {
+  .overview {
     grid-template-columns: 1fr;
   }
 

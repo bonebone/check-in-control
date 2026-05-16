@@ -1,8 +1,9 @@
-import { clearDailyOverrideAction, setDailyOverrideAction, updateWeeklyRuleAction } from "@/app/actions";
+import { clearDailyOverrideAction, setDailyOverrideAction } from "@/app/actions";
 import { AccountMenu } from "@/components/account-menu";
 import { ApiEndpointCard } from "@/components/api-endpoint-card";
 import { CalendarHeader } from "@/components/calendar-header";
-import { WEEKDAY_KEYS, WEEKDAY_LABELS, type WeeklyRule } from "@/lib/constants";
+import { WeeklyRuleStrip } from "@/components/weekly-rule-strip";
+import { WEEKDAY_LABELS, type WeeklyRule } from "@/lib/constants";
 import type { CalendarDay } from "@/lib/calendar";
 
 function formatSource(day: CalendarDay) {
@@ -74,40 +75,11 @@ export function Dashboard(props: {
             </article>
           </section>
 
-          <section className="card stack">
-            <div>
-              <div className="eyebrow">Weekly Rule</div>
-              <h2 className="section-title">周重复指令</h2>
-            </div>
-            <form action={updateWeeklyRuleAction} className="stack">
-              <div className="rule-grid">
-                {WEEKDAY_KEYS.map((key) => (
-                  <div key={key} className={`rule-tile ${props.weeklyRule[key] ? "active" : ""}`}>
-                    <label>
-                      <span>{WEEKDAY_LABELS[key]}</span>
-                      <input type="checkbox" name={key} defaultChecked={props.weeklyRule[key]} />
-                    </label>
-                    <div className="meta">{props.weeklyRule[key] ? "默认打卡" : "默认不打卡"}</div>
-                  </div>
-                ))}
-              </div>
-              <div className="button-row">
-                <button className="button" type="submit">
-                  保存周规则
-                </button>
-              </div>
-            </form>
-          </section>
-
           <section className="card calendar-frame">
             <CalendarHeader monthCursor={props.monthCursor} prevMonth={props.prevMonth} nextMonth={props.nextMonth} />
 
             <div className="calendar-grid">
-              {WEEKDAY_KEYS.map((weekday) => (
-                <div key={weekday} className="weekday">
-                  {WEEKDAY_LABELS[weekday]}
-                </div>
-              ))}
+              <WeeklyRuleStrip weeklyRule={props.weeklyRule} />
 
               {props.calendarDays.map((day, index) =>
                 day ? (
