@@ -1,26 +1,9 @@
-import { clearDailyOverrideAction, setDailyOverrideAction } from "@/app/actions";
 import { AccountMenu } from "@/components/account-menu";
 import { ApiEndpointCard } from "@/components/api-endpoint-card";
 import { CalendarHeader } from "@/components/calendar-header";
 import { WeeklyRuleStrip } from "@/components/weekly-rule-strip";
-import { WEEKDAY_LABELS, type WeeklyRule } from "@/lib/constants";
+import { type WeeklyRule } from "@/lib/constants";
 import type { CalendarDay } from "@/lib/calendar";
-
-function formatSource(day: CalendarDay) {
-  if (day.overrideAction === "FORCE_ON") {
-    return { label: "日指令: 打卡", className: "pill on" };
-  }
-
-  if (day.overrideAction === "FORCE_OFF") {
-    return { label: "日指令: 不打卡", className: "pill off" };
-  }
-
-  if (day.effectiveCheckin) {
-    return { label: "周规则: 打卡", className: "pill inherit" };
-  }
-
-  return { label: "周规则: 不打卡", className: "pill inherit" };
-}
 
 function dayCardClass(day: CalendarDay) {
   if (day.isPast) {
@@ -86,36 +69,7 @@ export function Dashboard(props: {
                   <article key={day.date} className={dayCardClass(day)}>
                     <div className="day-header">
                       <div className="day-number">{day.day}</div>
-                      <span className={formatSource(day).className}>{formatSource(day).label}</span>
                     </div>
-                    <div className="day-meta">
-                      <div>{day.effectiveCheckin ? "结果：打卡" : "结果：不打卡"}</div>
-                      <div>{WEEKDAY_LABELS[day.weekday]}</div>
-                    </div>
-                    {!day.isPast ? (
-                      <div className="day-actions">
-                        <form action={setDailyOverrideAction}>
-                          <input type="hidden" name="date" value={day.date} />
-                          <input type="hidden" name="action" value="FORCE_ON" />
-                          <button className="mini-button on" type="submit">
-                            强制打卡
-                          </button>
-                        </form>
-                        <form action={setDailyOverrideAction}>
-                          <input type="hidden" name="date" value={day.date} />
-                          <input type="hidden" name="action" value="FORCE_OFF" />
-                          <button className="mini-button off" type="submit">
-                            强制不打卡
-                          </button>
-                        </form>
-                        <form action={clearDailyOverrideAction}>
-                          <input type="hidden" name="date" value={day.date} />
-                          <button className="mini-button" type="submit">
-                            清除覆盖
-                          </button>
-                        </form>
-                      </div>
-                    ) : null}
                   </article>
                 ) : (
                   <div key={`blank-${index}`} className="day-card blank" />

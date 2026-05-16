@@ -49,12 +49,15 @@ export function WeeklyRuleStrip(props: {
       {WEEKDAY_KEYS.map((weekday) => (
         <label key={weekday} className={`weekday weekday-control ${rule[weekday] ? "active" : ""}`}>
           <span className="weekday-label">{WEEKDAY_LABELS[weekday]}</span>
-          <input
-            type="checkbox"
-            checked={rule[weekday]}
-            disabled={isPending}
-            onChange={(event) => updateOneDay(weekday, event.target.checked)}
-          />
+          <span className="weekday-toggle">
+            <input
+              type="checkbox"
+              checked={rule[weekday]}
+              disabled={isPending}
+              onChange={(event) => updateOneDay(weekday, event.target.checked)}
+            />
+            <span className="weekday-toggle-text">打卡</span>
+          </span>
         </label>
       ))}
     </>

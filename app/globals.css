@@ -482,7 +482,19 @@ button {
 }
 
 .weekday-label {
-  font-size: 0.92rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.weekday-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.weekday-toggle-text {
+  color: var(--muted);
 }
 
 .weekday-control input[type="checkbox"] {
@@ -539,8 +551,9 @@ button {
 }
 
 .day-number {
-  font-size: 1.5rem;
+  font-size: 2.1rem;
   font-family: var(--font-display);
+  line-height: 1;
 }
 
 .pill {
