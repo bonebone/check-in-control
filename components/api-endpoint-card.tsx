@@ -31,7 +31,7 @@ export function ApiEndpointCard(props: { apiUrl: string }) {
   }
 
   return (
-    <article className="card stack">
+    <article className="card stack compact-card">
       <div className="eyebrow">API Endpoint</div>
       <div className="endpoint-row">
         <input className="endpoint-input mono" value={props.apiUrl} readOnly aria-label="API Endpoint" />

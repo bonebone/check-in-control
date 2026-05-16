@@ -1,6 +1,7 @@
 import { clearDailyOverrideAction, setDailyOverrideAction, updateWeeklyRuleAction } from "@/app/actions";
 import { AccountMenu } from "@/components/account-menu";
 import { ApiEndpointCard } from "@/components/api-endpoint-card";
+import { CalendarHeader } from "@/components/calendar-header";
 import { WEEKDAY_KEYS, WEEKDAY_LABELS, type WeeklyRule } from "@/lib/constants";
 import type { CalendarDay } from "@/lib/calendar";
 
@@ -67,7 +68,7 @@ export function Dashboard(props: {
           <section className="overview">
             <ApiEndpointCard apiUrl={props.apiUrl} />
 
-            <article className="card stack">
+            <article className="card stack compact-card">
               <div className="eyebrow">Policy</div>
               <p className="meta">优先级：日指令 &gt; 周规则 &gt; 默认不打卡；过去日期只读，今天与未来日期允许操作。</p>
             </article>
@@ -99,20 +100,7 @@ export function Dashboard(props: {
           </section>
 
           <section className="card calendar-frame">
-            <div className="calendar-toolbar">
-              <div>
-                <div className="eyebrow">Calendar</div>
-                <h2 className="section-title">{props.monthCursor}</h2>
-              </div>
-              <div className="button-row">
-                <a className="ghost-button" href={`/?month=${props.prevMonth}`}>
-                  上个月
-                </a>
-                <a className="ghost-button" href={`/?month=${props.nextMonth}`}>
-                  下个月
-                </a>
-              </div>
-            </div>
+            <CalendarHeader monthCursor={props.monthCursor} prevMonth={props.prevMonth} nextMonth={props.nextMonth} />
 
             <div className="calendar-grid">
               {WEEKDAY_KEYS.map((weekday) => (
