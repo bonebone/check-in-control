@@ -2,15 +2,18 @@
 
 import { useState, useTransition } from "react";
 import { rotateApiKeyAction } from "@/app/actions";
+import { useToast } from "@/components/toast-provider";
 
 export function ApiEndpointCard(props: { apiUrl: string }) {
   const [isPending, startTransition] = useTransition();
   const [copyState, setCopyState] = useState<"idle" | "copied" | "failed">("idle");
+  const { showToast } = useToast();
 
   async function handleCopy() {
     try {
       await navigator.clipboard.writeText(props.apiUrl);
       setCopyState("copied");
+      showToast("API 地址已复制");
       window.setTimeout(() => setCopyState("idle"), 1800);
     } catch {
       setCopyState("failed");
@@ -27,6 +30,7 @@ export function ApiEndpointCard(props: { apiUrl: string }) {
 
     startTransition(async () => {
       await rotateApiKeyAction();
+      showToast("API 地址已更新");
     });
   }
 

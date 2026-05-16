@@ -65,7 +65,7 @@ export function CalendarHeader(props: {
     const nextCursor = `${nextYear}-${String(nextMonth).padStart(2, "0")}`;
     setActivePicker(null);
     startTransition(() => {
-      router.push(`/?month=${nextCursor}`);
+      router.push(`/?month=${nextCursor}`, { scroll: false });
     });
   }
 
