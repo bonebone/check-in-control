@@ -1,20 +1,20 @@
 :root {
-  --bg: #f4efe6;
-  --surface: rgba(255, 250, 242, 0.9);
-  --surface-strong: #fffaf2;
-  --text: #201c18;
-  --muted: #6c6258;
-  --line: rgba(32, 28, 24, 0.12);
-  --accent: #0d6b5c;
-  --accent-soft: rgba(13, 107, 92, 0.12);
-  --danger: #af4025;
-  --danger-soft: rgba(175, 64, 37, 0.12);
-  --shadow: 0 24px 80px rgba(48, 35, 23, 0.12);
+  --bg: #edf5f4;
+  --surface: rgba(247, 252, 251, 0.88);
+  --surface-strong: #fcfffe;
+  --text: #18313a;
+  --muted: #68808a;
+  --line: rgba(79, 116, 128, 0.16);
+  --accent: #4d9d96;
+  --accent-soft: rgba(77, 157, 150, 0.14);
+  --danger: #e08d7e;
+  --danger-soft: rgba(224, 141, 126, 0.14);
+  --shadow: 0 24px 80px rgba(111, 154, 165, 0.14);
   --radius-lg: 28px;
   --radius-md: 18px;
   --radius-sm: 12px;
-  --font-body: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", serif;
-  --font-display: "Baskerville", "Times New Roman", serif;
+  --font-body: "Avenir Next", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --font-display: "Avenir Next", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
 }
 
 * {
@@ -24,9 +24,9 @@
 html {
   min-height: 100%;
   background:
-    radial-gradient(circle at top left, rgba(13, 107, 92, 0.18), transparent 30%),
-    radial-gradient(circle at bottom right, rgba(175, 64, 37, 0.18), transparent 26%),
-    linear-gradient(180deg, #f8f3ea 0%, #efe6d8 100%);
+    radial-gradient(circle at top left, rgba(129, 203, 194, 0.28), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(197, 224, 232, 0.34), transparent 28%),
+    linear-gradient(180deg, #f5fbfb 0%, #e8f1f2 100%);
 }
 
 body {
@@ -59,7 +59,7 @@ button {
   width: min(1100px, 100%);
   margin: 0 auto;
   background: var(--surface);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.72);
   box-shadow: var(--shadow);
   border-radius: var(--radius-lg);
   backdrop-filter: blur(18px);
@@ -112,7 +112,7 @@ button {
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
   padding: 24px;
-  box-shadow: 0 12px 40px rgba(48, 35, 23, 0.08);
+  box-shadow: 0 12px 40px rgba(111, 154, 165, 0.1);
 }
 
 .auth-card {
@@ -167,20 +167,20 @@ button {
 }
 
 .button {
-  color: #f8f3ea;
-  background: linear-gradient(135deg, #155c53 0%, #0d6b5c 100%);
-  box-shadow: 0 10px 24px rgba(13, 107, 92, 0.24);
+  color: #f7fffd;
+  background: linear-gradient(135deg, #5aaea2 0%, #4d9d96 100%);
+  box-shadow: 0 10px 24px rgba(77, 157, 150, 0.24);
 }
 
 .ghost-button {
   color: var(--text);
-  background: rgba(32, 28, 24, 0.06);
+  background: rgba(128, 170, 181, 0.12);
 }
 
 .danger-button {
-  color: #fff9f3;
-  background: linear-gradient(135deg, #9a361d 0%, #b5492d 100%);
-  box-shadow: 0 10px 24px rgba(175, 64, 37, 0.22);
+  color: #fffdfc;
+  background: linear-gradient(135deg, #e6a194 0%, #dc8d7f 100%);
+  box-shadow: 0 10px 24px rgba(224, 141, 126, 0.22);
 }
 
 .message {
@@ -190,13 +190,13 @@ button {
 }
 
 .message.error {
-  background: rgba(175, 64, 37, 0.1);
-  color: #7a2713;
+  background: rgba(224, 141, 126, 0.14);
+  color: #9f5f55;
 }
 
 .message.success {
-  background: rgba(13, 107, 92, 0.1);
-  color: #0f5a4e;
+  background: rgba(77, 157, 150, 0.14);
+  color: #3a827b;
 }
 
 .topbar {
@@ -267,7 +267,7 @@ button {
   border-radius: 22px;
   border: 1px solid var(--line);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.94)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(251, 255, 255, 0.96)),
     #fff;
   padding: 16px;
   display: grid;
@@ -281,25 +281,25 @@ button {
 
 .day-card.disabled {
   opacity: 0.45;
-  background: rgba(255, 255, 255, 0.45);
+  background: rgba(248, 252, 252, 0.5);
 }
 
 .day-card.weekly-on {
-  box-shadow: inset 0 0 0 1px rgba(13, 107, 92, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(77, 157, 150, 0.18);
 }
 
 .day-card.override-on {
   background:
-    linear-gradient(180deg, rgba(224, 246, 240, 0.95), rgba(243, 251, 248, 1)),
+    linear-gradient(180deg, rgba(228, 248, 244, 0.98), rgba(245, 253, 250, 1)),
     #fff;
-  border-color: rgba(13, 107, 92, 0.34);
+  border-color: rgba(77, 157, 150, 0.34);
 }
 
 .day-card.override-off {
   background:
-    linear-gradient(180deg, rgba(254, 237, 232, 0.98), rgba(255, 248, 245, 1)),
+    linear-gradient(180deg, rgba(255, 243, 240, 0.98), rgba(255, 251, 250, 1)),
     #fff;
-  border-color: rgba(175, 64, 37, 0.3);
+  border-color: rgba(224, 141, 126, 0.32);
 }
 
 .day-header {
@@ -324,7 +324,7 @@ button {
 }
 
 .pill.inherit {
-  background: rgba(32, 28, 24, 0.07);
+  background: rgba(128, 170, 181, 0.14);
   color: var(--muted);
 }
 
@@ -355,17 +355,17 @@ button {
   border: 1px solid transparent;
   border-radius: 12px;
   padding: 9px 12px;
-  background: rgba(32, 28, 24, 0.06);
+  background: rgba(128, 170, 181, 0.12);
   text-align: left;
 }
 
 .mini-button.on {
-  background: rgba(13, 107, 92, 0.08);
+  background: rgba(77, 157, 150, 0.12);
   color: var(--accent);
 }
 
 .mini-button.off {
-  background: rgba(175, 64, 37, 0.08);
+  background: rgba(224, 141, 126, 0.12);
   color: var(--danger);
 }
 
@@ -379,14 +379,14 @@ button {
   padding: 16px;
   border-radius: 16px;
   border: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(251, 255, 255, 0.78);
   display: grid;
   gap: 10px;
 }
 
 .rule-tile.active {
-  border-color: rgba(13, 107, 92, 0.28);
-  box-shadow: inset 0 0 0 1px rgba(13, 107, 92, 0.18);
+  border-color: rgba(77, 157, 150, 0.28);
+  box-shadow: inset 0 0 0 1px rgba(77, 157, 150, 0.18);
 }
 
 .rule-tile label {
