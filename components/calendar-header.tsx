@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
 function parseCursor(cursor: string) {
@@ -17,6 +17,7 @@ export function CalendarHeader(props: {
   const rootRef = useRef<HTMLDivElement>(null);
   const yearSelectRef = useRef<HTMLSelectElement>(null);
   const monthSelectRef = useRef<HTMLSelectElement>(null);
+  const [, startTransition] = useTransition();
   const [activePicker, setActivePicker] = useState<"year" | "month" | null>(null);
   const { year, month } = parseCursor(props.monthCursor);
   const currentYear = new Date().getFullYear();
@@ -63,20 +64,22 @@ export function CalendarHeader(props: {
   function jumpTo(nextYear: number, nextMonth: number) {
     const nextCursor = `${nextYear}-${String(nextMonth).padStart(2, "0")}`;
     setActivePicker(null);
-    router.push(`/?month=${nextCursor}`);
+    startTransition(() => {
+      router.push(`/?month=${nextCursor}`);
+    });
   }
 
   return (
     <div className="calendar-toolbar">
       <div className="eyebrow">Calendar</div>
       <div className="calendar-nav" ref={rootRef}>
-        <a className="ghost-button icon-button calendar-nav-button" href={`/?month=${props.prevMonth}`} aria-label="上个月">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M14.7 5.3a1 1 0 0 1 0 1.4L9.41 12l5.3 5.3a1 1 0 1 1-1.42 1.4l-6-6a1 1 0 0 1 0-1.4l6-6a1 1 0 0 1 1.42 0Z" />
-          </svg>
-        </a>
-
         <div className="calendar-title-group">
+          <button className="ghost-button icon-button calendar-nav-button" type="button" aria-label="上个月" onClick={() => jumpTo(...Object.values(parseCursor(props.prevMonth)) as [number, number])}>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14.7 5.3a1 1 0 0 1 0 1.4L9.41 12l5.3 5.3a1 1 0 1 1-1.42 1.4l-6-6a1 1 0 0 1 0-1.4l6-6a1 1 0 0 1 1.42 0Z" />
+            </svg>
+          </button>
+
           {activePicker === "year" ? (
             <select
               ref={yearSelectRef}
@@ -118,13 +121,13 @@ export function CalendarHeader(props: {
               <span className="section-title">{String(month).padStart(2, "0")}</span>
             </button>
           )}
-        </div>
 
-        <a className="ghost-button icon-button calendar-nav-button" href={`/?month=${props.nextMonth}`} aria-label="下个月">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M9.3 18.7a1 1 0 0 1 0-1.4L14.59 12l-5.3-5.3a1 1 0 0 1 1.42-1.4l6 6a1 1 0 0 1 0 1.4l-6 6a1 1 0 0 1-1.42 0Z" />
-          </svg>
-        </a>
+          <button className="ghost-button icon-button calendar-nav-button" type="button" aria-label="下个月" onClick={() => jumpTo(...Object.values(parseCursor(props.nextMonth)) as [number, number])}>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9.3 18.7a1 1 0 0 1 0-1.4L14.59 12l-5.3-5.3a1 1 0 0 1 1.42-1.4l6 6a1 1 0 0 1 0 1.4l-6 6a1 1 0 0 1-1.42 0Z" />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   );

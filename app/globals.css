@@ -380,24 +380,13 @@ button {
 }
 
 .calendar-nav {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 14px;
-}
-
-.calendar-nav-button {
-  justify-self: start;
-}
-
-.calendar-nav-button:last-child {
-  justify-self: end;
+  display: flex;
+  justify-content: center;
 }
 
 .calendar-title-group {
   display: inline-flex;
   align-items: center;
-  justify-self: center;
   gap: 10px;
 }
 
@@ -623,12 +612,12 @@ button {
   }
 
   .calendar-nav {
-    grid-template-columns: 1fr;
+    justify-content: center;
   }
 
   .calendar-nav-button,
   .calendar-nav-button:last-child {
-    justify-self: stretch;
+    justify-self: auto;
   }
 
   .weekday {
