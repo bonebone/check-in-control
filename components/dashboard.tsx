@@ -1,5 +1,6 @@
-import { clearDailyOverrideAction, rotateApiKeyAction, setDailyOverrideAction, updateWeeklyRuleAction } from "@/app/actions";
+import { clearDailyOverrideAction, setDailyOverrideAction, updateWeeklyRuleAction } from "@/app/actions";
 import { AccountMenu } from "@/components/account-menu";
+import { ApiEndpointCard } from "@/components/api-endpoint-card";
 import { WEEKDAY_KEYS, WEEKDAY_LABELS, type WeeklyRule } from "@/lib/constants";
 import type { CalendarDay } from "@/lib/calendar";
 
@@ -57,27 +58,18 @@ export function Dashboard(props: {
             <h1>远程打卡规则台</h1>
             <p>单用户、东八区固定、日指令覆盖周规则。</p>
           </div>
-          <AccountMenu />
+          <div className="topbar-actions">
+            <div className="today-chip">
+              <span className="eyebrow">Today</span>
+              <strong>{props.today}</strong>
+            </div>
+            <AccountMenu />
+          </div>
         </header>
 
         <div className="dashboard">
           <section className="overview">
-            <article className="card stack">
-              <div className="eyebrow">Today</div>
-              <h2 className="section-title">{props.today}</h2>
-              <p className="meta">系统全部按 `Asia/Shanghai` 判定，不读取服务器本地时区。</p>
-            </article>
-
-            <article className="card stack">
-              <div className="eyebrow">API Endpoint</div>
-              <div className="mono">{props.apiUrl}</div>
-              <p className="meta">快捷指令先请求这个地址；失败时仍按本地周四到周日兜底。</p>
-              <form action={rotateApiKeyAction}>
-                <button className="ghost-button" type="submit">
-                  轮换 API Key
-                </button>
-              </form>
-            </article>
+            <ApiEndpointCard apiUrl={props.apiUrl} />
 
             <article className="card stack">
               <div className="eyebrow">Policy</div>
