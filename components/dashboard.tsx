@@ -6,23 +6,8 @@ import { type WeeklyRule } from "@/lib/constants";
 import type { CalendarDay } from "@/lib/calendar";
 
 function dayCardClass(day: CalendarDay) {
-  if (day.isPast) {
-    return "day-card disabled";
-  }
-
-  if (day.overrideAction === "FORCE_ON") {
-    return "day-card override-on";
-  }
-
-  if (day.overrideAction === "FORCE_OFF") {
-    return "day-card override-off";
-  }
-
-  if (day.effectiveCheckin) {
-    return "day-card weekly-on";
-  }
-
-  return "day-card";
+  const statusClass = day.effectiveCheckin ? "status-on" : "status-off";
+  return `day-card ${statusClass}${day.isPast ? " disabled" : ""}`;
 }
 
 export function Dashboard(props: {

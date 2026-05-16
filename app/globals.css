@@ -504,16 +504,13 @@ button {
 }
 
 .day-card {
-  min-height: 168px;
+  min-height: 84px;
   border-radius: 22px;
   border: 1px solid var(--line);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(251, 255, 255, 0.96)),
-    #fff;
-  padding: 16px;
+  background: rgba(251, 255, 255, 0.9);
+  padding: 12px;
   display: grid;
-  gap: 10px;
-  align-content: start;
+  place-items: center;
 }
 
 .day-card.blank {
@@ -522,93 +519,31 @@ button {
 
 .day-card.disabled {
   opacity: 0.45;
-  background: rgba(248, 252, 252, 0.5);
 }
 
-.day-card.weekly-on {
-  box-shadow: inset 0 0 0 1px rgba(77, 157, 150, 0.18);
-}
-
-.day-card.override-on {
+.day-card.status-on {
   background:
-    linear-gradient(180deg, rgba(228, 248, 244, 0.98), rgba(245, 253, 250, 1)),
+    linear-gradient(180deg, rgba(216, 245, 235, 0.98), rgba(236, 252, 246, 1)),
     #fff;
   border-color: rgba(77, 157, 150, 0.34);
 }
 
-.day-card.override-off {
+.day-card.status-off {
   background:
-    linear-gradient(180deg, rgba(255, 243, 240, 0.98), rgba(255, 251, 250, 1)),
+    linear-gradient(180deg, rgba(255, 243, 240, 0.98), rgba(255, 250, 248, 1)),
     #fff;
   border-color: rgba(224, 141, 126, 0.32);
 }
 
 .day-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
+  display: grid;
+  place-items: center;
 }
 
 .day-number {
-  font-size: 2.1rem;
+  font-size: 2.5rem;
   font-family: var(--font-display);
   line-height: 1;
-}
-
-.pill {
-  display: inline-flex;
-  align-items: center;
-  border-radius: 999px;
-  padding: 5px 10px;
-  font-size: 0.8rem;
-  line-height: 1;
-}
-
-.pill.inherit {
-  background: rgba(128, 170, 181, 0.14);
-  color: var(--muted);
-}
-
-.pill.on {
-  background: var(--accent-soft);
-  color: var(--accent);
-}
-
-.pill.off {
-  background: var(--danger-soft);
-  color: var(--danger);
-}
-
-.day-meta {
-  color: var(--muted);
-  font-size: 0.88rem;
-  line-height: 1.5;
-}
-
-.day-actions {
-  display: grid;
-  gap: 8px;
-  margin-top: auto;
-}
-
-.mini-button {
-  width: 100%;
-  border: 1px solid transparent;
-  border-radius: 12px;
-  padding: 9px 12px;
-  background: rgba(128, 170, 181, 0.12);
-  text-align: left;
-}
-
-.mini-button.on {
-  background: rgba(77, 157, 150, 0.12);
-  color: var(--accent);
-}
-
-.mini-button.off {
-  background: rgba(224, 141, 126, 0.12);
-  color: var(--danger);
 }
 
 .mono {
