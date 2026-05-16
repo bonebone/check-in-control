@@ -219,6 +219,88 @@ button {
   color: var(--muted);
 }
 
+.account-menu {
+  position: relative;
+}
+
+.account-trigger {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(128, 170, 181, 0.22);
+  border-radius: 999px;
+  background: rgba(251, 255, 255, 0.88);
+  box-shadow: 0 10px 30px rgba(111, 154, 165, 0.12);
+  color: var(--muted);
+  transition: transform 160ms ease, box-shadow 160ms ease, color 160ms ease, background 160ms ease;
+}
+
+.account-trigger:hover,
+.account-menu.open .account-trigger {
+  transform: translateY(-1px);
+  color: var(--accent);
+  background: rgba(245, 253, 252, 0.96);
+  box-shadow: 0 14px 34px rgba(111, 154, 165, 0.16);
+}
+
+.account-trigger svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+}
+
+.account-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  min-width: 164px;
+  padding: 8px;
+  border: 1px solid rgba(128, 170, 181, 0.18);
+  border-radius: 16px;
+  background: rgba(252, 255, 255, 0.96);
+  box-shadow: 0 18px 44px rgba(111, 154, 165, 0.16);
+  backdrop-filter: blur(18px);
+  display: grid;
+  gap: 4px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity 160ms ease, transform 160ms ease, visibility 160ms ease;
+}
+
+.account-menu:hover .account-dropdown,
+.account-menu.open .account-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.account-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text);
+  padding: 11px 12px;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.account-item:hover {
+  background: rgba(128, 170, 181, 0.12);
+}
+
+.account-item.danger {
+  color: var(--danger);
+}
+
+.account-item.danger:hover {
+  background: rgba(224, 141, 126, 0.12);
+}
+
 .dashboard {
   padding: 24px 32px 32px;
   display: grid;
@@ -227,12 +309,13 @@ button {
 
 .overview {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 16px;
 }
 
 .overview .card {
   min-height: 140px;
+  width: 100%;
 }
 
 .calendar-frame {

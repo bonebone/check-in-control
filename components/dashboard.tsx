@@ -1,5 +1,5 @@
 import { clearDailyOverrideAction, rotateApiKeyAction, setDailyOverrideAction, updateWeeklyRuleAction } from "@/app/actions";
-import { LogoutButton } from "@/components/logout-button";
+import { AccountMenu } from "@/components/account-menu";
 import { WEEKDAY_KEYS, WEEKDAY_LABELS, type WeeklyRule } from "@/lib/constants";
 import type { CalendarDay } from "@/lib/calendar";
 
@@ -57,7 +57,7 @@ export function Dashboard(props: {
             <h1>远程打卡规则台</h1>
             <p>单用户、东八区固定、日指令覆盖周规则。</p>
           </div>
-          <LogoutButton />
+          <AccountMenu />
         </header>
 
         <div className="dashboard">
