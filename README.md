@@ -39,6 +39,19 @@
 - `/api/checkin/today` 返回纯文本 `true` / `false`
 - 页面支持响应式布局，桌面和手机共用一套界面结构
 
+## Web 控制台
+
+当前 Web 控制台负责：
+
+- 配置每周默认打卡规则
+- 查看整个月的最终打卡状态
+- 直接切换某一天最终是否打卡
+- 生成并轮换快捷指令使用的 API 地址
+
+截图：
+
+![Web 控制台](./shortcut/web控制台.png)
+
 ## 技术栈
 
 - `Next.js` App Router
@@ -143,7 +156,7 @@ false
 
 截图：
 
-![同步今日计划](./IOS-shortcut/同步今日计划.png)
+![同步今日计划](./shortcut/同步今日计划.png)
 
 ### 2. 智能打卡
 
@@ -156,7 +169,7 @@ false
 
 截图：
 
-![智能打卡](./IOS-shortcut/智能打卡.png)
+![智能打卡](./shortcut/智能打卡.png)
 
 ### 3. 强制打卡
 
@@ -167,7 +180,7 @@ false
 
 截图：
 
-![强制打卡](./IOS-shortcut/强制打卡.png)
+![强制打卡](./shortcut/强制打卡.png)
 
 ### 4. 自动化
 
@@ -178,7 +191,7 @@ false
 
 截图：
 
-![自动化](./IOS-shortcut/自动化.PNG)
+![自动化](./shortcut/自动化.PNG)
 
 ## 推荐执行链路
 
