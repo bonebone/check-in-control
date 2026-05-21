@@ -135,7 +135,7 @@ openssl rand -base64 32
 站点最终访问地址，例如：
 
 ```txt
-https://check-in-control.simo.cool
+https://check-in-control.xxx.com
 ```
 
 如果还没有绑定自定义域名，也可以先填写默认的 Vercel 域名：
