@@ -21,6 +21,14 @@ export type DailyOverrideRecord = {
   action: DailyOverrideAction;
 };
 
+const APP_SCHEMA = "app_private";
+const TABLES = {
+  adminUser: `${APP_SCHEMA}.admin_user`,
+  settings: `${APP_SCHEMA}.settings`,
+  weeklyRule: `${APP_SCHEMA}.weekly_rule`,
+  dailyOverride: `${APP_SCHEMA}.daily_override`,
+} as const;
+
 let pool: Pool | null = null;
 let initializationPromise: Promise<void> | null = null;
 
@@ -35,9 +43,55 @@ function getPool() {
   return pool;
 }
 
+async function createSchema() {
+  await getPool().query(`
+    CREATE SCHEMA IF NOT EXISTS app_private;
+    REVOKE ALL ON SCHEMA app_private FROM PUBLIC;
+    ALTER DEFAULT PRIVILEGES IN SCHEMA app_private REVOKE ALL ON TABLES FROM PUBLIC;
+  `);
+}
+
+async function migrateLegacyPublicTables() {
+  await getPool().query(`
+    DO $$
+    BEGIN
+      IF to_regclass('app_private.admin_user') IS NULL THEN
+        ALTER TABLE IF EXISTS public.admin_user SET SCHEMA app_private;
+      END IF;
+    END $$;
+  `);
+
+  await getPool().query(`
+    DO $$
+    BEGIN
+      IF to_regclass('app_private.settings') IS NULL THEN
+        ALTER TABLE IF EXISTS public.settings SET SCHEMA app_private;
+      END IF;
+    END $$;
+  `);
+
+  await getPool().query(`
+    DO $$
+    BEGIN
+      IF to_regclass('app_private.weekly_rule') IS NULL THEN
+        ALTER TABLE IF EXISTS public.weekly_rule SET SCHEMA app_private;
+      END IF;
+    END $$;
+  `);
+
+  await getPool().query(`
+    DO $$
+    BEGIN
+      IF to_regclass('app_private.daily_override') IS NULL THEN
+        ALTER TABLE IF EXISTS public.daily_override SET SCHEMA app_private;
+      END IF;
+    END $$;
+  `);
+}
+
 async function createTables() {
   await getPool().query(`
-    CREATE TABLE IF NOT EXISTS admin_user (
+    CREATE TABLE IF NOT EXISTS app_private.admin_user (
       id SMALLINT PRIMARY KEY DEFAULT 1 CHECK (id = 1),
       password_hash TEXT NOT NULL,
       password_changed_at TIMESTAMPTZ
@@ -45,7 +99,7 @@ async function createTables() {
   `);
 
   await getPool().query(`
-    CREATE TABLE IF NOT EXISTS settings (
+    CREATE TABLE IF NOT EXISTS app_private.settings (
       id SMALLINT PRIMARY KEY DEFAULT 1 CHECK (id = 1),
       timezone TEXT NOT NULL,
       api_key TEXT NOT NULL,
@@ -54,7 +108,7 @@ async function createTables() {
   `);
 
   await getPool().query(`
-    CREATE TABLE IF NOT EXISTS weekly_rule (
+    CREATE TABLE IF NOT EXISTS app_private.weekly_rule (
       id SMALLINT PRIMARY KEY DEFAULT 1 CHECK (id = 1),
       monday BOOLEAN NOT NULL,
       tuesday BOOLEAN NOT NULL,
@@ -67,7 +121,7 @@ async function createTables() {
   `);
 
   await getPool().query(`
-    CREATE TABLE IF NOT EXISTS daily_override (
+    CREATE TABLE IF NOT EXISTS app_private.daily_override (
       date DATE PRIMARY KEY,
       action TEXT NOT NULL CHECK (action IN ('FORCE_ON', 'FORCE_OFF'))
     );
@@ -79,7 +133,7 @@ async function seedDefaults() {
 
   await getPool().query(
     `
-      INSERT INTO admin_user (id, password_hash)
+      INSERT INTO ${TABLES.adminUser} (id, password_hash)
       VALUES (1, $1)
       ON CONFLICT (id) DO NOTHING
     `,
@@ -88,7 +142,7 @@ async function seedDefaults() {
 
   await getPool().query(
     `
-      INSERT INTO settings (id, timezone, api_key, require_password_change)
+      INSERT INTO ${TABLES.settings} (id, timezone, api_key, require_password_change)
       VALUES (1, $1, $2, TRUE)
       ON CONFLICT (id) DO NOTHING
     `,
@@ -97,7 +151,7 @@ async function seedDefaults() {
 
   await getPool().query(
     `
-      INSERT INTO weekly_rule (
+      INSERT INTO ${TABLES.weeklyRule} (
         id, monday, tuesday, wednesday, thursday, friday, saturday, sunday
       ) VALUES (1, $1, $2, $3, $4, $5, $6, $7)
       ON CONFLICT (id) DO NOTHING
@@ -109,6 +163,8 @@ async function seedDefaults() {
 export async function ensureInitialized() {
   if (!initializationPromise) {
     initializationPromise = (async () => {
+      await createSchema();
+      await migrateLegacyPublicTables();
       await createTables();
       await seedDefaults();
     })();
@@ -120,7 +176,7 @@ export async function ensureInitialized() {
 export async function getSettings(): Promise<SettingsRecord> {
   await ensureInitialized();
   const result = await getPool().query(
-    `SELECT timezone, api_key, require_password_change FROM settings WHERE id = 1`,
+    `SELECT timezone, api_key, require_password_change FROM ${TABLES.settings} WHERE id = 1`,
   );
   const row = result.rows[0];
 
@@ -134,7 +190,7 @@ export async function getSettings(): Promise<SettingsRecord> {
 export async function getAdminUser(): Promise<AdminUserRecord> {
   await ensureInitialized();
   const result = await getPool().query(
-    `SELECT id, password_hash, password_changed_at FROM admin_user WHERE id = 1`,
+    `SELECT id, password_hash, password_changed_at FROM ${TABLES.adminUser} WHERE id = 1`,
   );
   const row = result.rows[0];
 
@@ -149,7 +205,7 @@ export async function updatePassword(passwordHash: string) {
   await ensureInitialized();
   await getPool().query(
     `
-      UPDATE admin_user
+      UPDATE ${TABLES.adminUser}
       SET password_hash = $1, password_changed_at = NOW()
       WHERE id = 1
     `,
@@ -157,7 +213,7 @@ export async function updatePassword(passwordHash: string) {
   );
   await getPool().query(
     `
-      UPDATE settings
+      UPDATE ${TABLES.settings}
       SET require_password_change = FALSE
       WHERE id = 1
     `,
@@ -167,7 +223,7 @@ export async function updatePassword(passwordHash: string) {
 export async function getWeeklyRule(): Promise<WeeklyRule> {
   await ensureInitialized();
   const result = await getPool().query(
-    `SELECT monday, tuesday, wednesday, thursday, friday, saturday, sunday FROM weekly_rule WHERE id = 1`,
+    `SELECT monday, tuesday, wednesday, thursday, friday, saturday, sunday FROM ${TABLES.weeklyRule} WHERE id = 1`,
   );
   const row = result.rows[0];
 
@@ -181,7 +237,7 @@ export async function updateWeeklyRule(nextRule: WeeklyRule) {
   await ensureInitialized();
   await getPool().query(
     `
-      UPDATE weekly_rule
+      UPDATE ${TABLES.weeklyRule}
       SET monday = $1,
           tuesday = $2,
           wednesday = $3,
@@ -200,7 +256,7 @@ export async function getDailyOverridesForRange(startDate: string, endDate: stri
   const result = await getPool().query(
     `
       SELECT date::text AS date, action
-      FROM daily_override
+      FROM ${TABLES.dailyOverride}
       WHERE date >= $1::date AND date <= $2::date
       ORDER BY date ASC
     `,
@@ -213,7 +269,7 @@ export async function getDailyOverridesForRange(startDate: string, endDate: stri
 export async function getDailyOverride(date: string) {
   await ensureInitialized();
   const result = await getPool().query(
-    `SELECT date::text AS date, action FROM daily_override WHERE date = $1::date`,
+    `SELECT date::text AS date, action FROM ${TABLES.dailyOverride} WHERE date = $1::date`,
     [date],
   );
 
@@ -224,7 +280,7 @@ export async function upsertDailyOverride(date: string, action: DailyOverrideAct
   await ensureInitialized();
   await getPool().query(
     `
-      INSERT INTO daily_override (date, action)
+      INSERT INTO ${TABLES.dailyOverride} (date, action)
       VALUES ($1::date, $2)
       ON CONFLICT (date) DO UPDATE
       SET action = EXCLUDED.action
@@ -235,12 +291,12 @@ export async function upsertDailyOverride(date: string, action: DailyOverrideAct
 
 export async function deleteDailyOverride(date: string) {
   await ensureInitialized();
-  await getPool().query(`DELETE FROM daily_override WHERE date = $1::date`, [date]);
+  await getPool().query(`DELETE FROM ${TABLES.dailyOverride} WHERE date = $1::date`, [date]);
 }
 
 export async function rotateApiKey() {
   await ensureInitialized();
   const apiKey = generateApiKey();
-  await getPool().query(`UPDATE settings SET api_key = $1 WHERE id = 1`, [apiKey]);
+  await getPool().query(`UPDATE ${TABLES.settings} SET api_key = $1 WHERE id = 1`, [apiKey]);
   return apiKey;
 }
